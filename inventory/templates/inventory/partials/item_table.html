@@ -1,0 +1,22 @@
+<table>
+  <tr><th>Item</th><th>Stock</th><th>Quantity</th><th></th></tr>
+  {% for item in group_items %}
+  <tr>
+    <td>{{ item.name }}</td>
+    <td>{{ item.current_stock }}</td>
+    <td>
+      <input type="number" name="quantity" min="0" value="0" required form="add-item-{{ item.id }}">
+    </td>
+    <td>
+      <form id="add-item-{{ item.id }}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="add_to_cart">
+        <input type="hidden" name="item_id" value="{{ item.id }}">
+        <button type="submit">Add to List</button>
+      </form>
+    </td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="4">No items yet.</td></tr>
+  {% endfor %}
+</table>

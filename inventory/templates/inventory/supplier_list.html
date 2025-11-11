@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Suppliers | Marrybrown Inventory{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="section-header">
+    <div>
+      <p class="eyebrow">Welcome back</p>
+      <h1>Suppliers</h1>
+      <p class="muted">Logged in as {{ staff_display }}</p>
+    </div>
+    <a class="btn-link" href="{% url 'cart_view' %}">View Store Room List</a>
+  </div>
+
+  <div class="supplier-list">
+    {% for s in suppliers %}
+      <div class="supplier-card">
+        <p>{{ s.name }}</p>
+        <a href="{% url 'item_list' s.id %}">View items →</a>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

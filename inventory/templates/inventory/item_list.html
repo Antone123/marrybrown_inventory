@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}{{ supplier.name }} | Marrybrown Inventory{% endblock %}
+
+{% block content %}
+<div class="page-actions">
+  <a class="btn-link" href="{% url 'supplier_list' %}">← Suppliers</a>
+  <a class="btn-link" href="{% url 'cart_view' %}">Store Room List</a>
+</div>
+
+<section class="card">
+  <h1>{{ supplier.name }}</h1>
+  {% if error %}
+    <div class="message error">{{ error }}</div>
+  {% endif %}
+
+  {% if item_groups %}
+    {% for label, group_items in item_groups.items %}
+      <h3>{{ label }}</h3>
+      {% include "inventory/partials/item_table.html" with group_items=group_items %}
+    {% endfor %}
+  {% else %}
+    {% include "inventory/partials/item_table.html" with group_items=items %}
+  {% endif %}
+</section>
+
+{% if request.user.is_staff %}
+<section class="card">
+  <h2>Add new item for {{ supplier.name }}</h2>
+  <form method="post" class="form-grid">
+    {% csrf_token %}
+    <input type="hidden" name="form_type" value="create_item">
+    <label>
+      <span>Name</span>
+      <input type="text" name="new_item_name" required>
+    </label>
+    <label>
+      <span>Starting stock</span>
+      <input type="number" name="new_item_stock" min="0" value="0" required>
+    </label>
+    {% if supplier.name|lower == 'mb warehouse' %}
+    <label>
+      <span>Category</span>
+      <select name="new_item_category" required>
+        <option value="">--Select--</option>
+        <option value="ingredient">Ingredient</option>
+        <option value="packaging">Packaging</option>
+      </select>
+    </label>
+    {% endif %}
+    <button type="submit">Add Item</button>
+  </form>
+</section>
+{% endif %}
+{% endblock %}

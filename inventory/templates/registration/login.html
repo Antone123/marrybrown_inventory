@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body_class %}auth-page{% endblock %}
+
+{% block content %}
+<div class="auth-layout">
+  <div class="auth-hero">
+    <img src="{% static 'inventory/img/marrybrown_brand_logo.svg' %}" alt="Marrybrown" class="hero-logo">
+    <h1>Marrybrown Store Room</h1>
+    <p>Log in to manage supplier stock, update the store room list, and keep every outlet ready.</p>
+  </div>
+  <div class="auth-card">
+    <h2>Staff Login</h2>
+    {% if form.non_field_errors %}
+      <div class="message error">
+        {% for error in form.non_field_errors %}
+          <div>{{ error }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <form method="post" class="form-grid">
+      {% csrf_token %}
+      <label>
+        <span>Username</span>
+        {{ form.username }}
+      </label>
+      <label>
+        <span>Password</span>
+        {{ form.password }}
+      </label>
+      <input type="hidden" name="next" value="{{ next }}">
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
