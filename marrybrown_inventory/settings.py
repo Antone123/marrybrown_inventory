@@ -135,6 +135,10 @@ ALLOWED_HOSTS = ['*']
 # Static files setup for Render
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'inventory/static'),  # if you have static files in your app
+]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Let Whitenoise serve static files efficiently
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
